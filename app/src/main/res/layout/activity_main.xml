@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/teal_200"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:background="@drawable/fondo"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="45dp"
+        android:gravity="center"
+        tools:layout_editor_absoluteY="283dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic"
+            android:textSize="80px"
+            android:layout_marginBottom="50dp"
+            android:text="OSCILADORES">
+        </TextView>
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:padding="0px"
+            android:layout_marginBottom="50dp"
+            android:onClick="Sinusoidal"
+            android:src="@drawable/ondasenoidal">
+        </ImageButton>
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:padding="0px"
+            android:onClick="Recto"
+            android:src="@drawable/ondacuadradas">
+        </ImageButton>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
