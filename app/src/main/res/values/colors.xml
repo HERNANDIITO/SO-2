@@ -7,5 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#4CAF50</color>
+
+    <color name="main_bg">#00BDD1</color>
+    <color name="alt_bg">#B5F8D7</color>
+    <color name="input_bg">#0076BE</color>
+    <color name="input_border">#F9C82D</color>
+    <color name="btn_bg">#4FAE4F</color>
+
 </resources>
