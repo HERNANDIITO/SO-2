@@ -3,12 +3,14 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 
@@ -60,6 +62,33 @@ public class OsciladorRecto extends AppCompatActivity{
     }
 
     public void Suma(View view) {
+        if ( r1Edit.getText().toString().isEmpty() ) {
+            MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
+            mpok.start();
+
+            String text = "Introduce un valor en R";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+
+            return;
+        }
+
+        if ( cEdit.getText().toString().isEmpty() ) {
+            MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
+            mpok.start();
+
+            String text = "Introduce un valor en C";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+
+            return;
+        }
+
+        MediaPlayer mpok= MediaPlayer.create(this,R.raw.ok);
+        mpok.start();
+
         double r1 = Double.parseDouble(r1Edit.getText().toString());
         double r2 = Double.parseDouble(r2Edit.getText().toString());
         double c = Double.parseDouble(cEdit.getText().toString());
