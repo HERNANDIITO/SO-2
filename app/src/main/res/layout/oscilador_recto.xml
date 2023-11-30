@@ -29,6 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <EditText
+                    android:inputType="numberDecimal"
+                    android:id="@+id/r1"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:padding="5dp"
@@ -40,6 +42,8 @@
                     android:layout_height="wrap_content">
                 </EditText>
                 <EditText
+                    android:inputType="numberDecimal"
+                    android:id="@+id/r2"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:padding="5dp"
@@ -51,6 +55,8 @@
                     android:layout_height="wrap_content">
                 </EditText>
                 <EditText
+                    android:inputType="numberDecimal"
+                    android:id="@+id/c"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:padding="5dp"
@@ -61,7 +67,9 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content">
                 </EditText>
-                <EditText
+                <TextView
+                    android:inputType="numberDecimal"
+                    android:id="@+id/freq"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:padding="5dp"
@@ -71,7 +79,7 @@
                     android:background="@drawable/edittext_selector"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content">
-                </EditText>
+                </TextView>
 
                 <RelativeLayout
                     android:gravity="center"
@@ -85,6 +93,7 @@
                         android:gravity="center_horizontal"
                         android:layout_height="wrap_content">
                         <Button
+                            android:onClick="Suma"
                             android:backgroundTint="@color/btn_bg"
                             android:id="@+id/calc"
                             android:text="Calcula"
@@ -92,6 +101,7 @@
                             android:layout_height="wrap_content">
                         </Button>
                         <Button
+                            android:onClick="Clear"
                             android:backgroundTint="@color/btn_bg"
                             android:layout_marginLeft="20dp"
                             android:id="@+id/clear"
