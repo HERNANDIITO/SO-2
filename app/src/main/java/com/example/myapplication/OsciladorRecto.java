@@ -87,8 +87,8 @@ public class OsciladorRecto extends AppCompatActivity{
         double r2 = Double.parseDouble(r2Edit.getText().toString());
         double c = Double.parseDouble(cEdit.getText().toString());
 
-        if ( r1 < 2000 | r1 > 1000000 ) {
-            errorToast("R1 debe estar comprendido en el intervalo (2 kΩ, 1 MΩ)");
+        if ( r1 < 2000 || r1 > 1000000 ) {
+            errorToast("R1 debe estar comprendido en el intervalo [2 kΩ, 1 MΩ]");
             return;
         }
 

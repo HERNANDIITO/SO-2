@@ -85,7 +85,7 @@ public class OsciladorSinusoidal extends AppCompatActivity{
         double c = Double.parseDouble(cEdit.getText().toString());
 
         if ( r < 1000 || r > 1000000 ) {
-            errorToast("R debe estar comprendido en el intervalo (1 KΩ, 1 MΩ )");
+            errorToast("R debe estar comprendido en el intervalo [1 KΩ, 1 MΩ]");
             return;
         }
 
