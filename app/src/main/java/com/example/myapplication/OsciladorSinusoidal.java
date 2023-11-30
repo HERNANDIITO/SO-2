@@ -58,37 +58,42 @@ public class OsciladorSinusoidal extends AppCompatActivity{
         freq.setText("");
     }
 
+    public void errorToast(String error) {
+        MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
+        mpok.start();
+
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, error, duration);
+        toast.show();
+
+        return;
+    }
+
     public void Suma(View view) {
         if ( rEdit.getText().toString().isEmpty() ) {
-            MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
-            mpok.start();
-
-            String text = "Introduce un valor en R";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.show();
-
+            errorToast("Introduce un valor en R");
             return;
         }
 
         if ( cEdit.getText().toString().isEmpty() ) {
-            MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
-            mpok.start();
-
-            String text = "Introduce un valor en C";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.show();
-
+            errorToast("Introduce un valor en C");
             return;
         }
-
-        MediaPlayer mpok= MediaPlayer.create(this,R.raw.ok);
-        mpok.start();
 
         double r = Double.parseDouble(rEdit.getText().toString());
         double r1 = Double.parseDouble(r1Edit.getText().toString());
         double c = Double.parseDouble(cEdit.getText().toString());
+
+        if ( r < 1000 || r > 1000000 ) {
+            errorToast("R debe estar comprendido en el intervalo (1 KΩ, 1 MΩ )");
+            return;
+        }
+
+
+
+        MediaPlayer mpok= MediaPlayer.create(this,R.raw.ok);
+        mpok.start();
+
         double denom = 2*Math.PI * r * c * Math.sqrt(6);
         double res = 1 / denom;
 

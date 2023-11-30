@@ -61,43 +61,46 @@ public class OsciladorRecto extends AppCompatActivity{
         freq.setText("");
     }
 
+    public void errorToast(String error) {
+        MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
+        mpok.start();
+
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, error, duration);
+        toast.show();
+
+        return;
+    }
+
     public void Suma(View view) {
         if ( r1Edit.getText().toString().isEmpty() ) {
-            MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
-            mpok.start();
-
-            String text = "Introduce un valor en R";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.show();
-
+            errorToast("Introduce un valor en R1");
             return;
         }
 
         if ( cEdit.getText().toString().isEmpty() ) {
-            MediaPlayer mpok= MediaPlayer.create(this,R.raw.nok);
-            mpok.start();
-
-            String text = "Introduce un valor en C";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.show();
-
+            errorToast("Introduce un valor en C");
             return;
         }
-
-        MediaPlayer mpok= MediaPlayer.create(this,R.raw.ok);
-        mpok.start();
 
         double r1 = Double.parseDouble(r1Edit.getText().toString());
         double r2 = Double.parseDouble(r2Edit.getText().toString());
         double c = Double.parseDouble(cEdit.getText().toString());
+
+        if ( r1 < 2000 | r1 > 1000000 ) {
+            errorToast("R1 debe estar comprendido en el intervalo (2 kΩ, 1 MΩ)");
+            return;
+        }
+
         double denom = 2.5 * r1 * c;
         double res = 1 / denom;
 
         BigDecimal textRes = new BigDecimal(String.valueOf(res)).setScale(4, BigDecimal.ROUND_FLOOR);
 
         freq.setText(String.valueOf(textRes));
+
+        MediaPlayer mpok= MediaPlayer.create(this,R.raw.ok);
+        mpok.start();
 
     }
 }
