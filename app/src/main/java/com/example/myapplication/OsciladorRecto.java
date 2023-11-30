@@ -16,8 +16,7 @@ import java.math.BigDecimal;
 
 public class OsciladorRecto extends AppCompatActivity{
 
-    private EditText r1Edit, cEdit;
-    private TextView r2Edit, freq;
+    private EditText r1Edit, cEdit, r2Edit, freq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +24,9 @@ public class OsciladorRecto extends AppCompatActivity{
         setContentView(R.layout.oscilador_recto);
 
         r1Edit = (EditText) findViewById(R.id.r1);
-        r2Edit = (TextView) findViewById(R.id.r2);
+        r2Edit = (EditText) findViewById(R.id.r2);
         cEdit = (EditText) findViewById(R.id.c);
-        freq = (TextView) findViewById(R.id.freq);
+        freq = (EditText) findViewById(R.id.freq);
 
         r1Edit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -39,14 +38,54 @@ public class OsciladorRecto extends AppCompatActivity{
             @Override
             public void afterTextChanged(Editable editable) {
                 if ( r1Edit.getText().toString().isEmpty() ) {
-                    r2Edit.setText("");
+                    r2Edit.getText().clear();
                     return;
                 }
 
-                double r = Double.parseDouble(r1Edit.getText().toString());
-                r2Edit.setText(String.valueOf(r * 2));
+                double r1 = Double.parseDouble(r1Edit.getText().toString());
+
+                if ( r2Edit.getText().toString().isEmpty() ) {
+                    r2Edit.setText(String.valueOf(r1 / 2));
+                    return;
+                }
+
+                double r2 = Double.parseDouble(r2Edit.getText().toString());
+
+                if ( r2 == r1 * 2 ) { return; }
+
+                if ( r1 == r2 / 2 || r1 == r2 * 2 ) { return; }
             }
         });
+
+        r2Edit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if ( r2Edit.getText().toString().isEmpty() ) {
+                    r1Edit.setText("");
+                    return;
+                }
+
+                double r2 = Double.parseDouble(r2Edit.getText().toString());
+
+                if ( r1Edit.getText().toString().isEmpty() ) {
+                    r1Edit.setText(String.valueOf(r2 * 2));
+                    return;
+                }
+
+                double r1 = Double.parseDouble(r1Edit.getText().toString());
+
+                if ( r1 == r2 / 2 || r1 == r2 * 2 ) { return; }
+
+                r1Edit.setText(String.valueOf(r2 * 2));
+            }
+        });
+
     }
 
     public void Back (View view) {

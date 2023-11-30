@@ -27,6 +27,7 @@ public class OsciladorSinusoidal extends AppCompatActivity{
         freq = (EditText) findViewById(R.id.freq);
 
         rEdit.addTextChangedListener(new TextWatcher() {
+            // Editamos R, r1 tiene que ser 29 veces mayor
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
@@ -35,13 +36,54 @@ public class OsciladorSinusoidal extends AppCompatActivity{
 
             @Override
             public void afterTextChanged(Editable editable) {
+
                 if ( rEdit.getText().toString().isEmpty() ) {
-                    r1Edit.setText("");
+                    r1Edit.getText().clear();
                     return;
                 }
 
                 double r = Double.parseDouble(rEdit.getText().toString());
-                r1Edit.setText(String.valueOf(r * 29));
+
+                if ( r1Edit.getText().toString().isEmpty() ) {
+                    r1Edit.setText(String.valueOf(r / 29));
+                    return;
+                }
+
+                double r1 = Double.parseDouble(r1Edit.getText().toString());
+
+                if ( r1 == r / 29 || r1 == r * 29 ) { return; }
+
+                r1Edit.setText(String.valueOf(r / 29));
+
+            }
+        });
+
+        r1Edit.addTextChangedListener(new TextWatcher() {
+            // Editamos r1, R tiene que ser 29 vece menor
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if ( r1Edit.getText().toString().isEmpty() ) {
+                    rEdit.getText().clear();
+                    return;
+                }
+                double r1 = Double.parseDouble(r1Edit.getText().toString());
+                if ( rEdit.getText().toString().isEmpty() ) {
+                    rEdit.setText(String.valueOf(r1 * 29));
+                    return;
+                }
+                double r = Double.parseDouble(rEdit.getText().toString());
+
+                if ( r1 == r / 29 || r1 == r * 29 ) { return; }
+
+                rEdit.setText(String.valueOf(r1 * 29));
+
             }
         });
     }

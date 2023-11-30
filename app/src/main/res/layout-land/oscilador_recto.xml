@@ -42,7 +42,6 @@
                     android:layout_height="wrap_content">
                 </EditText>
                 <EditText
-                    android:editable="false"
                     android:id="@+id/r2"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
@@ -68,7 +67,6 @@
                     android:layout_height="wrap_content">
                 </EditText>
                 <EditText
-                    android:editable="false"
                     android:inputType="number"
                     android:id="@+id/freq"
                     android:textColor="@color/white"
