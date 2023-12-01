@@ -7,9 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,9 +34,9 @@ public class OsciladorSinusoidal extends AppCompatActivity {
         cSpinner =    (Spinner) findViewById(R.id.c_spinner);
         freqSpinner = (Spinner) findViewById(R.id.f_spinner);
 
-        ArrayAdapter<CharSequence> resAdapter  = ArrayAdapter.createFromResource(this, R.array.resistencias,  android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> cAdapter    = ArrayAdapter.createFromResource(this, R.array.condensadores, android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> freqAdapter = ArrayAdapter.createFromResource(this, R.array.frecuencia,    android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> resAdapter  = ArrayAdapter.createFromResource(this, R.array.resistencias,  R.layout.spinner);
+        ArrayAdapter<CharSequence> cAdapter    = ArrayAdapter.createFromResource(this, R.array.condensadores, R.layout.spinner);
+        ArrayAdapter<CharSequence> freqAdapter = ArrayAdapter.createFromResource(this, R.array.frecuencia,    R.layout.spinner);
 
         resAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -88,6 +86,7 @@ public class OsciladorSinusoidal extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     public double getTotalValue( double currentValue, Spinner spinner ) {
@@ -96,33 +95,28 @@ public class OsciladorSinusoidal extends AppCompatActivity {
             case 0:
                 break;
             case 1:
-                result = result * 1000;
+                result = result * Math.pow(10, 3);
                 break;
             case 2:
-                result = result * 1000000;
-                break;
-            default:
-                result = -1;
+                result = result * Math.pow(10, 6);
                 break;
         }
         return result;
     }
 
-    public double transformTotal( double totalValue, Spinner spinner ) {
-        double result = totalValue;
-        switch ( spinner.getSelectedItemPosition() ) {
+    public double getTotalC( double currentValue, Spinner spinner ) {
+        double result = currentValue;
+        switch (spinner.getSelectedItemPosition() ) {
             case 0:
+                result = result * Math.pow(10, -12);
                 break;
             case 1:
-                result = result / 1000;
+                result = result * Math.pow(10, -9);
                 break;
             case 2:
-                result = result / 1000000;
+                result = result * Math.pow(10, -6);
                 break;
         }
-        Log.d("POSITION", String.valueOf(spinner.getSelectedItemPosition()));
-        Log.d("TOTAL VALUE", String.valueOf(totalValue));
-        Log.d("RESULT", String.valueOf(result));
         return result;
     }
 
@@ -162,6 +156,7 @@ public class OsciladorSinusoidal extends AppCompatActivity {
 
         double r;
         double c = Double.parseDouble(cEdit.getText().toString());
+        c = getTotalC(c, cSpinner);
 
         if ( !rEdit.getText().toString().isEmpty() ) {
             r = Double.parseDouble(rEdit.getText().toString());
@@ -169,9 +164,10 @@ public class OsciladorSinusoidal extends AppCompatActivity {
         } else {
             r = Double.parseDouble(r1Edit.getText().toString());
             r = getTotalValue(r, r1Spinner);
+            r = r / 29;
         }
 
-        if ( r < 1000 || r > 1000000 ) {
+        if ( r < Math.pow(10, 3) || r > Math.pow(10, 6) ) {
             errorToast("R debe estar comprendido en el intervalo [1 KΩ, 1 MΩ]");
             return;
         }
@@ -179,12 +175,33 @@ public class OsciladorSinusoidal extends AppCompatActivity {
         MediaPlayer mpok= MediaPlayer.create(this,R.raw.ok);
         mpok.start();
 
+        if ( c == 0 ) {
+            errorToast("Introduce un valor de C");
+            return;
+        }
+
         double denom = 2 * Math.PI * r * c * Math.sqrt(6);
         double res = 1 / denom;
+
+        res = transformValue(res, freqSpinner);
 
         BigDecimal textRes = new BigDecimal(String.valueOf(res)).setScale(4, BigDecimal.ROUND_FLOOR);
 
         freq.setText(String.valueOf(textRes));
 
+    }
+
+    private double transformValue(double totalValue, Spinner spinner) {
+        double result = totalValue;
+        switch (spinner.getSelectedItemPosition()) {
+            case 0:
+                break;
+            case 1:
+                result = result / Math.pow(10, 3);
+                break;
+            case 2:
+                result = result / Math.pow(10, 6);
+        }
+        return result;
     }
 }

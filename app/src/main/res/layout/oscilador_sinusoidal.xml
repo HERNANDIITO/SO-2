@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -112,6 +113,7 @@
                         android:layout_height="wrap_content">
                     </Spinner>
                     <EditText
+                        android:editable="false"
                         android:layout_below="@id/c"
                         android:id="@+id/freq"
                         android:textColor="@color/white"
@@ -124,7 +126,6 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content">
                     </EditText>
-
                 </RelativeLayout>
 
                 <RelativeLayout
