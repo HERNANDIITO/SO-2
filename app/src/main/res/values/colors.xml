@@ -13,5 +13,6 @@
     <color name="input_bg">#0076BE</color>
     <color name="input_border">#F9C82D</color>
     <color name="btn_bg">#4FAE4F</color>
+    <color name="disabled">#808080</color>
 
 </resources>

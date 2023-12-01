@@ -7,27 +7,49 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
 
-public class OsciladorSinusoidal extends AppCompatActivity{
+public class OsciladorSinusoidal extends AppCompatActivity {
 
     private EditText rEdit, cEdit, r1Edit, freq;
+    private Spinner rSpinner, cSpinner, r1Spinner, freqSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oscilador_sinusoidal);
-        rEdit = (EditText) findViewById(R.id.r);
+        rEdit =  (EditText) findViewById(R.id.r);
         r1Edit = (EditText) findViewById(R.id.r1);
-        cEdit = (EditText) findViewById(R.id.c);
-        freq = (EditText) findViewById(R.id.freq);
+        cEdit =  (EditText) findViewById(R.id.c);
+        freq =   (EditText) findViewById(R.id.freq);
+
+        rSpinner =    (Spinner) findViewById(R.id.r_spinner);
+        r1Spinner =   (Spinner) findViewById(R.id.r1_spinner);
+        cSpinner =    (Spinner) findViewById(R.id.c_spinner);
+        freqSpinner = (Spinner) findViewById(R.id.f_spinner);
+
+        ArrayAdapter<CharSequence> resAdapter  = ArrayAdapter.createFromResource(this, R.array.resistencias,  android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> cAdapter    = ArrayAdapter.createFromResource(this, R.array.condensadores, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> freqAdapter = ArrayAdapter.createFromResource(this, R.array.frecuencia,    android.R.layout.simple_spinner_item);
+
+        resAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        rSpinner.setAdapter(resAdapter);
+        r1Spinner.setAdapter(resAdapter);
+        cSpinner.setAdapter(cAdapter);
+        freqSpinner.setAdapter(freqAdapter);
 
         rEdit.addTextChangedListener(new TextWatcher() {
-            // Editamos R, r1 tiene que ser 29 veces mayor
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
@@ -36,30 +58,18 @@ public class OsciladorSinusoidal extends AppCompatActivity{
 
             @Override
             public void afterTextChanged(Editable editable) {
-
                 if ( rEdit.getText().toString().isEmpty() ) {
-                    r1Edit.getText().clear();
-                    return;
+                    r1Edit.setEnabled(true);
+                    r1Edit.setHintTextColor(getResources().getColor(R.color.white));
+
+                } else {
+                    r1Edit.setEnabled(false);
+                    r1Edit.setHintTextColor(getResources().getColor(R.color.disabled));
                 }
-
-                double r = Double.parseDouble(rEdit.getText().toString());
-
-                if ( r1Edit.getText().toString().isEmpty() ) {
-                    r1Edit.setText(String.valueOf(r / 29));
-                    return;
-                }
-
-                double r1 = Double.parseDouble(r1Edit.getText().toString());
-
-                if ( r1 == r / 29 || r1 == r * 29 ) { return; }
-
-                r1Edit.setText(String.valueOf(r / 29));
-
             }
         });
 
         r1Edit.addTextChangedListener(new TextWatcher() {
-            // Editamos r1, R tiene que ser 29 vece menor
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
@@ -68,24 +78,52 @@ public class OsciladorSinusoidal extends AppCompatActivity{
 
             @Override
             public void afterTextChanged(Editable editable) {
-
                 if ( r1Edit.getText().toString().isEmpty() ) {
-                    rEdit.getText().clear();
-                    return;
+                    rEdit.setEnabled(true);
+                    rEdit.setHintTextColor(getResources().getColor(R.color.white));
+
+                } else {
+                    rEdit.setEnabled(false);
+                    rEdit.setHintTextColor(getResources().getColor(R.color.disabled));
                 }
-                double r1 = Double.parseDouble(r1Edit.getText().toString());
-                if ( rEdit.getText().toString().isEmpty() ) {
-                    rEdit.setText(String.valueOf(r1 * 29));
-                    return;
-                }
-                double r = Double.parseDouble(rEdit.getText().toString());
-
-                if ( r1 == r / 29 || r1 == r * 29 ) { return; }
-
-                rEdit.setText(String.valueOf(r1 * 29));
-
             }
         });
+    }
+
+    public double getTotalValue( double currentValue, Spinner spinner ) {
+        double result = currentValue;
+        switch ( spinner.getSelectedItemPosition() ) {
+            case 0:
+                break;
+            case 1:
+                result = result * 1000;
+                break;
+            case 2:
+                result = result * 1000000;
+                break;
+            default:
+                result = -1;
+                break;
+        }
+        return result;
+    }
+
+    public double transformTotal( double totalValue, Spinner spinner ) {
+        double result = totalValue;
+        switch ( spinner.getSelectedItemPosition() ) {
+            case 0:
+                break;
+            case 1:
+                result = result / 1000;
+                break;
+            case 2:
+                result = result / 1000000;
+                break;
+        }
+        Log.d("POSITION", String.valueOf(spinner.getSelectedItemPosition()));
+        Log.d("TOTAL VALUE", String.valueOf(totalValue));
+        Log.d("RESULT", String.valueOf(result));
+        return result;
     }
 
     public void Back (View view) {
@@ -112,8 +150,8 @@ public class OsciladorSinusoidal extends AppCompatActivity{
     }
 
     public void Suma(View view) {
-        if ( rEdit.getText().toString().isEmpty() ) {
-            errorToast("Introduce un valor en R");
+        if ( rEdit.getText().toString().isEmpty() && r1Edit.getText().toString().isEmpty()) {
+            errorToast("Introduce un valor en R o R1");
             return;
         }
 
@@ -122,21 +160,26 @@ public class OsciladorSinusoidal extends AppCompatActivity{
             return;
         }
 
-        double r = Double.parseDouble(rEdit.getText().toString());
-        double r1 = Double.parseDouble(r1Edit.getText().toString());
+        double r;
         double c = Double.parseDouble(cEdit.getText().toString());
+
+        if ( !rEdit.getText().toString().isEmpty() ) {
+            r = Double.parseDouble(rEdit.getText().toString());
+            r = getTotalValue(r, rSpinner);
+        } else {
+            r = Double.parseDouble(r1Edit.getText().toString());
+            r = getTotalValue(r, r1Spinner);
+        }
 
         if ( r < 1000 || r > 1000000 ) {
             errorToast("R debe estar comprendido en el intervalo [1 KΩ, 1 MΩ]");
             return;
         }
 
-
-
         MediaPlayer mpok= MediaPlayer.create(this,R.raw.ok);
         mpok.start();
 
-        double denom = 2*Math.PI * r * c * Math.sqrt(6);
+        double denom = 2 * Math.PI * r * c * Math.sqrt(6);
         double res = 1 / denom;
 
         BigDecimal textRes = new BigDecimal(String.valueOf(res)).setScale(4, BigDecimal.ROUND_FLOOR);

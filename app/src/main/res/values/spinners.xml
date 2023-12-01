@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="resistencias">
+        <item>Ω</item>
+        <item>KΩ</item>
+        <item>MΩ</item>
+    </string-array>
+
+    <string-array name="condensadores">
+        <item>pF</item>
+        <item>nF</item>
+        <item>μF</item>
+    </string-array>
+
+    <string-array name="frecuencia">
+        <item>Hz</item>
+        <item>Khz</item>
+        <item>Mhz</item>
+    </string-array>
+</resources>
